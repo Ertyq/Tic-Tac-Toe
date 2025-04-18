@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rules</title>
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background-color: gray;}
+        .dot-list {
+            list-style-type: disc;
+            padding-left: 40px;
+            margin-top: 0;}
+        .dot-list > li::before {
+            content: "";}
+        .dash-list {
+            list-style: none;
+            padding: 0;}
+        .dash-list > li::before {
+            content: "- ";
+            margin-left: 10px;
+            margin-right: 5px;}
+        header {
+            background-color: rgb(180, 171, 171);
+            height: 100px;}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: lightgray;}
+        .body_content {
+            margin-left: 250px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            }
+    </style>
+</head>
+<body>
+    <!-- Topbar -->
+    <div style = "margin-left: 250px; width: clac(100% - 250px);">
+        <header>
+            <div style = "padding-top: 16px; text-align: center; font-size: 60px;">
+                <b>Game description and rules:</b><br>
+            <div>
+        </header>
+    </div>
+
+    <!-- Sidebar -->
+    <div class = "sidebar">
+        <div style = "height: 70px; top: 0; left: 0; text-align: center; font-size: 40px; padding-top: 30px;">
+            Tic-Tac-Toe
+        </div>
+        <div style = "top: 100px; height: 100vh; padding: 20px; background-color: rgb(155, 155, 155);">
+            <b><span title = "Key function of this website" onclick = "sweep(); clear_stats()">Play</span></b>
+            <ul class = "dash-list">
+                <li><a href = "index.html" style = "text-decoration: none; color: black;"><span title = "Play with your friend who is sitting right next to you">PvP</span></a></li>
+                <li>
+                    <span title = "Play against bot, A stands for Algorithm, it's not AI powered">PvA</span>
+                    <ul class = "dot-list">
+                        <li><span title = "Bot will make random moves" onclick = "sweep(); clear_stats(); boot(1)"><a href = "index.html?l=1" style = "text-decoration: none; color: black;">Easy</a></span></li>
+                        <li><span title = "Half of the bots moves will be perfect" onclick = "sweep(); clear_stats(); boot(2)"><a href = "index.html?l=2" style = "text-decoration: none; color: black;">Medium</a></span></li>
+                        <li><span title = "Bot will make nearly perfect moves every time" onclick = "sweep(); clear_stats(); boot(3)"><a href = "index.html?l=3" style = "text-decoration: none; color: black;">Hard</a></span></li>
+                    </ul>
+                </li>
+            </ul>
+            <a href = "rules.html"><b>Rules</b></a>
+            <br><br>
+            <a href = "https://www.youtube.com/embed/3qzcAMShotQ?si=DDz0zLooqbqU49n2" target = "_blank"><b>Video tutorial</b></a>
+            <br><br>
+            <a href = "https://www.michaelxing.com/UltimateTTT/v3/"><b>Ultimate Tic-Tac-Toe</b></a>
+            <br><br>
+            <a href = "https://en.wikipedia.org/wiki/Tic-tac-toe" target = "_blank"><b>Wikipedia</b></a>
+        </div>
+    </div>
+
+    <!-- Page content -->
+    <div class = "body_content" style = "text-align: center;">
+        <br>
+        Tic-Tac-Toe is a simple two-player game with the following rules:<br>
+        <br>
+        🎯 Objective:<br>
+        Be the first to get three of your marks in a row — horizontally, vertically, or diagonally.<br>
+        <br>
+        🧑‍🤝‍🧑 Players:<br>
+        Two players.<br>
+        <br>
+        One plays as X, the other as O.<br>
+        <br>
+        🕹️ Gameplay:<br>
+        The game is played on a 3x3 grid.<br>
+        <br>
+        Players take turns placing their mark (X or O) in an empty square.<br>
+        <br>
+        The first player to align three of their marks in a row (horizontally, vertically, or diagonally) wins.<br>
+        <br>
+        If all 9 squares are filled and no one has won, the game is a draw (or "cat's game").<br>
+        <br>
+        💡 Strategy Tips:<br>
+        The center is powerful.<br>
+        <br>
+        Control corners for better chances of creating multiple win paths.<br>
+        <br>
+        Watch for and block your opponent’s potential winning moves.
+    </div>
+</body>
+</html>
