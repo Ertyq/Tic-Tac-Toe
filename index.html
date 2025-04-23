@@ -1,0 +1,482 @@
+<!--That was my first take on the AIish concept-->
+<!--13.04-->
+
+<!--nauczyć A atakować-->
+
+<!doctype html>
+<html translate = "no" lang = "en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        .cursorX {
+            cursor: url("cursor_X.png") 0 0, auto;
+            display: inline-block;}
+        .cursorO {
+            cursor: url("cursor_X.png") 0 0, auto;
+            display: inline-block;}
+        .dot-list {
+            list-style-type: disc;
+            padding-left: 40px;
+            margin-top: 0;}
+        .dot-list > li::before {
+            content: "";}
+        .dash-list {
+            list-style: none;
+            padding: 0;}
+        .dash-list > li::before {
+            content: "- ";
+            margin-left: 10px;
+            margin-right: 5px;}
+        header {
+            background-color: rgb(180, 171, 171);
+            height: 100px;}
+        button {
+            background-color: lightgray;
+            outline: none;
+            border-color: gray;
+            border-radius: 4px;}
+        .icon {
+            z-index: 2;
+            position: absolute;
+            display: none;
+            margin: 16px;
+            width: 80px;}
+        .line {
+            z-index: 1000;
+            position: absolute;
+            display: none;}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: lightgray;}
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background-color: gray;}
+        .body_content {
+            margin-left: 250px;
+            padding-top: 20px;
+            padding-bottom: 20px;}
+        .container {
+            position: relative;
+            margin: 0 auto;
+            width: 368px;}
+	    .flex-box {
+	        display: flex;
+	        gap: 10px;}
+    </style>
+</head>
+<body>
+    <!-- Topbar -->
+    <div style = "margin-left: 250px; width: clac(100% - 250px);">
+        <header>
+            <div id = "topbar_content" style = "padding-top: 16px; text-align: center; font-size: 60px;">
+                <b>PvP</b><br>
+            <div>
+        </header>
+    </div>
+
+    <!-- Sidebar -->
+    <div class = "sidebar">
+        <div style = "height: 70px; top: 0; left: 0; text-align: center; font-size: 40px; padding-top: 30px;">
+            Tic-Tac-Toe
+        </div>
+        <div style = "top: 100px; height: 100vh; padding: 20px; background-color: rgb(155, 155, 155);">
+            <b><span title = "Key function of this website" onclick = "sweep(); clear_stats(); swap()" style = "text-decoration: none; color: black;">Play</span></b>
+            <ul class = "dash-list">
+                <li><a href = "index.html" style = "text-decoration: none; color: black;"><span title = "Play with your friend who is sitting right next to you">PvP</span></a></li>
+                <li>
+                    <span title = "Play against bot, A stands for Algorithm, it's not AI powered">PvA</span>
+                    <ul class = "dot-list">
+                        <li><span title = "Bot will make random moves" onclick = "sweep(); clear_stats(); boot(1)">Easy</span></li>
+                        <li><span title = "Half of the bots moves will be perfect" onclick = "sweep(); clear_stats(); boot(2)">Medium</span></li>
+                        <li><span title = "Bot will make nearly perfect moves every time" onclick = "sweep(); clear_stats(); boot(3)">Hard</span></li>
+                    </ul>
+                </li>
+            </ul>
+            <a href = "rules.html"><b>Rules</b></a>
+            <br><br>
+            <a href = "https://www.youtube.com/embed/3qzcAMShotQ?si=DDz0zLooqbqU49n2" target = "_blank"><b>Video tutorial</b></a>
+            <br><br>
+            <a href = "https://www.michaelxing.com/UltimateTTT/v3/"><b>Ultimate Tic-Tac-Toe</b></a>
+            <br><br>
+            <a href = "https://en.wikipedia.org/wiki/Tic-tac-toe" target = "_blank"><b>Wikipedia</b></a>
+        </div>
+    </div>
+
+    <!-- Game grid -->
+    <div class = "body_content">
+        <div class = "container">
+            <div id = "grid">
+                <img src = "tic tac toe base.png" usemap="#base" style="display: block; width: 100%; z-index: 1;">
+                
+                <img src = "X icon.png" id = "i1" class = "icon" style = "top: 0px; left: 0px">
+                <img src = "X icon.png" id = "i2" class = "icon" style = "top: 0px; left: 128px">
+                <img src = "X icon.png" id = "i3" class = "icon" style = "top: 0px; left: 256px">
+                <img src = "X icon.png" id = "i4" class = "icon" style = "top: 128px; left: 0px">
+                <img src = "X icon.png" id = "i5" class = "icon" style = "top: 128px; left: 128px">
+                <img src = "X icon.png" id = "i6" class = "icon" style = "top: 128px; left: 256px">
+                <img src = "X icon.png" id = "i7" class = "icon" style = "top: 256px; left: 0px">
+                <img src = "X icon.png" id = "i8" class = "icon" style = "top: 256px; left: 128px">
+                <img src = "X icon.png" id = "i9" class = "icon" style = "top: 256px; left: 256px">
+                
+                <img src = "O icon.png" id = "i1a" class = "icon" style = "top: 0px; left: 0px">
+                <img src = "O icon.png" id = "i2a" class = "icon" style = "top: 0px; left: 128px">
+                <img src = "O icon.png" id = "i3a" class = "icon" style = "top: 0px; left: 256px">
+                <img src = "O icon.png" id = "i4a" class = "icon" style = "top: 128px; left: 0px">
+                <img src = "O icon.png" id = "i5a" class = "icon" style = "top: 128px; left: 128px">
+                <img src = "O icon.png" id = "i6a" class = "icon" style = "top: 128px; left: 256px">
+                <img src = "O icon.png" id = "i7a" class = "icon" style = "top: 256px; left: 0px">
+                <img src = "O icon.png" id = "i8a" class = "icon" style = "top: 256px; left: 128px">
+                <img src = "O icon.png" id = "i9a" class = "icon" style = "top: 256px; left: 256px">
+
+                <map name="base">
+                    <area shape="rect" id = "m1" coords = "0,0,112,112" onclick = "revolution(1)">
+                    <area shape="rect" id = "m2" coords = "128,0,240,112" onclick = "revolution(2)">
+                    <area shape="rect" id = "m3" coords = "256,0,368,112" onclick = "revolution(3)">
+                    <area shape="rect" id = "m4" coords = "0,128,112,240" onclick = "revolution(4)">
+                    <area shape="rect" id = "m5" coords = "128,128,240,240" onclick = "revolution(5)">
+                    <area shape="rect" id = "m6" coords = "256,128,368,240" onclick = "revolution(6)">
+                    <area shape="rect" id = "m7" coords = "0,256,112,368" onclick = "revolution(7)">
+                    <area shape="rect" id = "m8" coords = "128,256,240,368" onclick = "revolution(8)">
+                    <area shape="rect" id = "m9" coords = "256,256,368,368" onclick = "revolution(9)">
+                </map>
+            </div>
+
+            <img src = "red_line.png" id = "l3" class = "line" style = "top: 6px; left: 50px">
+            <img src = "red_line.png" id = "l4" class = "line" style = "top: 6px; left: 178px">
+            <img src = "red_line.png" id = "l5" class = "line" style = "top: 6px; left: 306px">
+            <img src = "red_line2.png" id = "l0" class = "line" style = "top: 50px; left: 6px">
+            <img src = "red_line2.png" id = "l1" class = "line" style = "top: 178px; left: 6px">
+            <img src = "red_line2.png" id = "l2" class = "line" style = "top: 306px; left: 6px">
+
+            <img src = "blue_line.png" id = "l3a" class = "line" style = "top: 6px; left: 50px">
+            <img src = "blue_line.png" id = "l4a" class = "line" style = "top: 6px; left: 178px">
+            <img src = "blue_line.png" id = "l5a" class = "line" style = "top: 6px; left: 306px">
+            <img src = "blue_line2.png" id = "l0a" class = "line" style = "top: 50px; left: 6px">
+            <img src = "blue_line2.png" id = "l1a" class = "line" style = "top: 178px; left: 6px">
+            <img src = "blue_line2.png" id = "l2a" class = "line" style = "top: 306px; left: 6px">
+
+            <img src = "red_line3.png" id = "l6" class = "line" style = "top: 8px; left: 8px">
+            <img src = "red_line4.png" id = "l7" class = "line" style = "top: 8px; left: 8px">
+            <img src = "blue_line3.png" id = "l6a" class = "line" style = "top: 8px; left: 8px">
+            <img src = "blue_line4.png" id = "l7a" class = "line" style = "top: 8px; left: 8px">
+        </div>
+    </div>
+
+    <!-- Stats and buttons -->
+    <div class = "body_content" style = "padding-top: 0;">
+        <div class = "container">
+            <div class = "flex-box" style = "width: 368px;">
+                <div style = "width: 112px; margin-right: 16px;">
+                    <b>Wins:</b><br>
+                    X: 
+                    <span id = "X_wins"></span><br>
+                    O: 
+                    <span id = "O_wins"></span><br>
+                    Ties: 
+                    <span id = "ties"></span><br>
+                </div>
+                <div style = "width: 112px; margin: 0 auto; margin-right: 16px; text-align: center;">
+                    <br>
+                    <span id = "per_X"></span>
+                    <br>
+                    <span id = "per_O"></span>
+                    <br>
+                    <span id = "per_ties"></span>
+                </div>
+		        <div style = "width: 112px; text-align: center">
+                    <button type = "button" style = "position: relative; margin-top: 15px; margin-bottom: 15px;" onclick="sweep()">Restart game</button>
+		            <br>
+                    <button type = "button" style = "position: relative;" onclick="clear_stats()">Clear stats</button>
+                </div>
+	        </div>
+        </div>
+    </div>
+
+    <script>
+        //Game core
+        var opponent = "P"
+        var last = "X"
+        var difficulty = 0
+        var ties = 0
+        var X_wins = 0
+        var O_wins = 0
+        var win_preset = "none"
+        var game = true
+        var turn = "X"
+        var turn_count = 0
+        var winning_presets = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
+        var occupied_X_cells = []
+        var occupied_O_cells = []
+        
+        function revolution(pos) {
+            if (!game) return
+            if (occupied_X_cells.includes(pos) || occupied_O_cells.includes(pos)) {alert("Given position isn't available!"); return}
+            set_icon(pos)
+            turn_count++
+            let winner = winner_check()
+            if (winner == "tie") {tie()}
+            else if (winner != "None") {winner_message(); game = false}
+            else {if (turn == "X") {turn = "O"} else {turn = "X"}}
+            if (opponent == "A") {A_revolution(process());}
+        }
+        
+        function A_revolution(pos) {
+            if (!game) return
+            turn = "O"
+            set_icon(pos)
+            turn_count++
+            let winner = winner_check()
+            if (winner == "tie") {tie()}
+            else if (winner != "None") {winner_message(); game = false}
+            if (turn == "X") {turn = "O"} else {turn = "X"}
+        }
+
+        function set_icon(pos) {
+            console.log("Clicked!", pos)
+            if (turn == "X") {
+                document.getElementById("i" + pos).style.display = "block"
+                occupied_X_cells.push(pos)
+                occupied_X_cells.sort()
+            } else if (turn == "O") {
+                document.getElementById("i" + pos + "a").style.display = "block"
+                occupied_O_cells.push(pos)
+                occupied_O_cells.sort()
+            }
+            document.getElementById("m" + pos).removeAttribute("onclick")
+        }
+        
+        function winner_check() {
+            if (!game) {return}
+            else if (turn_count <= 4) {return "None"}
+            else {
+                if (turn == "X") {var checked_player = occupied_X_cells} else {var checked_player = occupied_O_cells}
+                for (let x = 0; x < winning_presets.length; x++) {
+                    let checked_preset = winning_presets[x]
+                    if (checked_player.includes(checked_preset[0]) && checked_player.includes(checked_preset[1]) && checked_player.includes(checked_preset[2])) {
+                        if (turn == "X") {
+                            X_wins++;
+                            win_preset = "l" + x;
+                            console.log(win_preset);
+                            document.getElementById(win_preset).style.display = "block";
+                            console.log(document.getElementById(win_preset).style.display)}
+                        else {
+                            O_wins++;
+                            win_preset = "l" + x + "a";
+                            console.log(win_preset)
+                            document.getElementById(win_preset).style.display = "block";
+                            console.log(document.getElementById(win_preset).style.display)}
+                        update()
+                        return turn
+                    }
+                }
+                if (turn_count == 9) {return "tie"}
+                return "None"
+            }
+        }
+        
+        function winner_message() {alert("Winner: " + turn)}
+        
+        function tie() {alert("Tie"); game = false; ties++; document.getElementById("ties").textContent = ties; update()}
+
+        //Clearing game grid
+        function sweep() {
+            game = true
+            turn_count = 0
+            occupied_X_cells = []
+            occupied_O_cells = []
+            for (let x = 1; x <= 9; x++) {document.getElementById("i" + x).style.display = "none"}
+            for (let x = 1; x <= 9; x++) {document.getElementById("i" + x + "a").style.display = "none"}
+            for (let x = 1; x <= 9; x++) {document.getElementById("m" + x).setAttribute("onclick", "revolution(" + x + ")")}
+            if (win_preset != "none") {document.getElementById(win_preset).style.display = "none"; win_preset = "none"}
+            if (last == "X") {
+                last = "O";
+                if (opponent == "A") {A_revolution(process()); console.log("A_revolution fired")} else {turn = "O"};}
+            else {last = "X"; turn = "X"}
+        }
+        
+        function swap() {opponent = "P"}
+
+        //Stats
+        function update() {
+            document.getElementById("X_wins").textContent = X_wins
+            document.getElementById("O_wins").textContent = O_wins
+            document.getElementById("ties").textContent = ties
+            document.getElementById("per_X").textContent = (X_wins * 100 / (X_wins + O_wins + ties)).toFixed(2) + "%"
+            document.getElementById("per_O").textContent = (O_wins * 100 / (X_wins + O_wins + ties)).toFixed(2) + "%"
+            document.getElementById("per_ties").textContent = (ties * 100 / (X_wins + O_wins + ties)).toFixed(2) + "%"
+        }
+
+        update()
+        
+        //Clearing stats
+        function clear_stats() {
+            X_wins = 0
+            O_wins = 0
+            ties = 0
+            update()
+        }
+        
+        //Mouse icon
+        var grid = document.getElementById("grid")
+        grid.addEventListener("mouseenter", () => {grid.addEventListener("mousemove", () => {if (turn == "X") {grid.style.cursor = "url('cursor_X.png') 0 0, auto"} else {grid.style.cursor = "url('cursor_O.png') 0 0, auto"};});});
+        
+        //"AI"
+        //Booting "AI"
+        function boot(diff) {
+            turn = "X"
+            last = "X"
+            difficulty = diff
+            console.log("A booted, difficulty: ", difficulty)
+            opponent = "A"
+            if (difficulty == 1) {document.getElementById("topbar_content").innerHTML = "<b>PvA (easy)</b>"}
+            else if (difficulty == 2) {document.getElementById("topbar_content").innerHTML = "<b>PvA (medium)</b>"}
+            else if (difficulty == 3) {document.getElementById("topbar_content").innerHTML = "<b>PvA (hard)</b>"}
+        }
+
+        //"AI" itself
+        function net() {
+            var free = [1,2,3,4,5,6,7,8,9]
+            var bestMoves = []
+            var bestMove_value = 0
+
+            free = free.filter(el => !occupied_X_cells.includes(el));
+            free = free.filter(el => !occupied_O_cells.includes(el));
+
+            // Function that checks if there is streak of two same symbols, returns missing positions for win
+            function streak(who) {
+                var solutions = []
+                var checked_cells = []
+                if (who == "X") {checked_cells = occupied_X_cells}
+                else {checked_cells = occupied_O_cells}
+                // Every combination + checking
+                for (let gap = 1; gap <= (checked_cells.length - 1); gap++) {
+                    for (let par = 0; par < (checked_cells.length - gap); par++) {
+                        const a = checked_cells[par]
+                        const b = checked_cells[par + gap]
+                        // Checking
+                        if ([1,2,3,4,6].includes(b - a)) {
+                            // Looking for solution
+                            for (let x = 0; x < winning_presets.length; x++) {
+                                if (winning_presets[x].includes(a) && winning_presets[x].includes(b)) {
+                                    let solution = winning_presets[x].filter(el => el != a)
+                                    solution = solution.filter(el => el != b)
+                                    solution = solution[0]
+                                    if (free.includes(solution)) {solutions.push(solution)}
+                                }
+                            }
+                        }
+                    }
+                }
+                if (solutions) {return solutions}
+                else {return []}    
+            }
+
+            // Function that checks for burnt streaks
+            function burnt_streak() {
+                let burnt = []
+                for (let x = 0; x < occupied_X_cells.length; x++) {
+                    for (let y = 0; y < occupied_O_cells.length; y++) {
+                        for (let z = 0; z < winning_presets.length; z++) {
+                            if (winning_presets[z].includes(occupied_X_cells[x]) && winning_presets[z].includes(occupied_O_cells[y])) {
+                                let solution = winning_presets[z].filter(el => el != occupied_X_cells[x])
+                                solution = solution.filter(el => el != occupied_O_cells[y])
+                                solution = solution[0]
+                                burnt.push(solution)
+                            }
+                        }
+                    }
+                }
+                if (burnt.length != 0) {return burnt}
+                else {return []}
+            }
+
+            // Value depending on place in grid
+            function position(pos) {
+                let value = 0
+                if (pos == 5) {value = 15}
+                else if ([1,3,7,9].includes(pos)) {value = 5}
+                else {value = 0}
+                return value
+            }
+
+            // Value depending on win in 1 possibilities for opponent
+            function block() {
+                var solutions = streak("X")
+                if (solutions.length == 0) {return false}
+                else {return solutions}
+            }
+
+            // Value depending on win in 1 possibilities for A
+            function win() {
+                let solutions = streak("O")
+                if (solutions.length == 0) {return false}
+                else {return solutions}
+            }
+
+            // MAIN
+            // When A have win in 1
+            let win_return = win()
+            if (win_return) {bestMoves = win_return}
+            else {
+                // When opponent have win in 1
+                let block_return = block()
+                if (block_return) {bestMoves = block_return}
+                // Normal turn
+                else {
+                    const burnt = burnt_streak()
+                    for (let y = 0; y < free.length; y++) {
+                        var nextMove = free[y]
+                        //console.log("Checking: ", nextMove)
+                        var value = 0
+                        // If that is A's first move
+                        if (turn_count == 1) {value = position(nextMove)}
+                        // Else
+                        else {
+                            value = position(nextMove);
+                            if (burnt.includes(nextMove)) {value = 0}
+                            }
+                        //console.log("Checked: value ", value)
+                        // Comparing nextMove to bestMove
+                        if (bestMove_value < value) {
+                            bestMoves = []
+                            bestMoves.push(nextMove)
+                            bestMove_value = value}
+                        else if (bestMove_value == value) {bestMoves.push(nextMove)}
+                    }
+                }
+            }
+
+            // Choosing best move from array
+            if (bestMoves.length > 1) {nextMove = bestMoves[Math.floor(Math.random() * bestMoves.length)];}
+            else {nextMove = bestMoves[0]}
+
+            return nextMove
+        }
+
+        //"AI" processing
+        function process() {
+            if (difficulty == 2 && Math.floor(Math.random() * 2) == 0) {return net();}
+            else if (difficulty == 3) {return net();}
+            else {
+                var free = [1,2,3,4,5,6,7,8,9];
+                free = free.filter(el => !occupied_X_cells.includes(el));
+                free = free.filter(el => !occupied_O_cells.includes(el));
+                free = free[Math.floor(Math.random() * free.length)];
+                return free;}
+        }
+        
+        // Enter method
+        const params = new URLSearchParams(window.location.search);
+        const from = params.get("l");
+
+        if (from == 1) {boot(1)}
+        else if (from == 2) {boot(2)}
+        else if (from == 3) {boot(3)}
+    </script>
+</body>
+</html>
